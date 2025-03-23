@@ -1,16 +1,16 @@
 class Property {
   final String id;
   // 基本信息
-  final String name; // 房源名称
-  final String type; // 房源类型
-  final String address; // 地址
-  final String description; // 描述
+  late String name; // 房源名称
+  late String type; // 房源类型
+  late String address; // 地址
+  late String description; // 描述
   final List<String> images; // 图片列表
   // 设施
   final List<String> facilities; // 设施
   // 状态
-  final String status; // 使用枚举表示状态
-  final Map<String, bool> availableFrom; // 日历可用性
+  late String status; // 使用枚举表示状态
+  late Map<String, dynamic>? availableFrom; // 日历可用性
   // 价格
   final double basePrice; // 基础价格
   final double holidayPrice; // 节假日价格
@@ -82,7 +82,7 @@ class Property {
       facilities: List<String>.from(json['facilities'] ?? []), // 处理空值
       status: json['status'],
       availableFrom:
-          Map<String, bool>.from(json['available_from'] ?? {}), // 处理空值
+          Map<String, dynamic>.from(json['available_from'] ?? {}), // 处理空值
       basePrice: (json['base_price'] as num?)?.toDouble() ?? 0.0, // 处理空值
       holidayPrice: (json['holiday_price'] as num?)?.toDouble() ?? 0.0, // 处理空值
       additionalFees:
@@ -96,6 +96,51 @@ class Property {
               ?.map((review) => Reviews.fromJson(review))
               .toList() ??
           [], // 如果 reviews 为空，则返回空列表
+    );
+  }
+  // 添加 copyWith 方法
+  Property copyWith({
+    String? id,
+    String? name,
+    String? type,
+    String? address,
+    String? description,
+    List<String>? images,
+    List<String>? facilities,
+    String? status,
+    Map<String, dynamic>? availableFrom,
+    double? basePrice,
+    double? holidayPrice,
+    double? additionalFees,
+    int? availableRooms,
+    String? minStayDays,
+    String? checkInTime,
+    String? checkOutTime,
+    String? cancellationPolicy,
+    List<Reviews>? reviews,
+  }) {
+    return Property(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      type: type ?? this.type,
+      address: address ?? this.address,
+      description: description ?? this.description,
+      images: images ?? List.from(this.images),
+      facilities: facilities ?? List.from(this.facilities),
+      status: status ?? this.status,
+      availableFrom: availableFrom ??
+          this.availableFrom?.map(
+                (key, value) => MapEntry(key, Map<String, dynamic>.from(value)),
+              ),
+      basePrice: basePrice ?? this.basePrice,
+      holidayPrice: holidayPrice ?? this.holidayPrice,
+      additionalFees: additionalFees ?? this.additionalFees,
+      availableRooms: availableRooms ?? this.availableRooms,
+      minStayDays: minStayDays ?? this.minStayDays,
+      checkInTime: checkInTime ?? this.checkInTime,
+      checkOutTime: checkOutTime ?? this.checkOutTime,
+      cancellationPolicy: cancellationPolicy ?? this.cancellationPolicy,
+      reviews: reviews ?? List.from(this.reviews),
     );
   }
 }
@@ -146,6 +191,29 @@ class Reviews {
       reply: json['reply'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
+    );
+  }
+
+  // 添加 copyWith 方法
+  Reviews copyWith({
+    int? id,
+    String? propertyId,
+    String? user,
+    double? rating,
+    String? comment,
+    String? reply,
+    String? createdAt,
+    String? updatedAt,
+  }) {
+    return Reviews(
+      id: id ?? this.id,
+      propertyId: propertyId ?? this.propertyId,
+      user: user ?? this.user,
+      rating: rating ?? this.rating,
+      comment: comment ?? this.comment,
+      reply: reply ?? this.reply,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 }

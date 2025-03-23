@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../models/data.dart';
-import '../widgets/dashboard_card.dart';
 import 'package:go_router/go_router.dart';
+import '../../models/data.dart';
+import '../../widgets/dashboard_card.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});

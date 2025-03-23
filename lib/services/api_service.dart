@@ -75,8 +75,12 @@ class ApiService {
                   facilities:
                       List<String>.from(item['facilities'] ?? []), // 处理空值
                   images: List<String>.from(item['images'] ?? []), // 处理空值
-                  status: getStatusText(item['status']),
-                  availableFrom: Map<String, bool>.from(item['available_from']),
+                  status: item['status'],
+                  availableFrom: item['available_from']
+                          is Map<DateTime, Map<String, dynamic>>
+                      ? Map<String, Map<String, dynamic>>.from(
+                          item['available_from'])
+                      : <String, Map<String, dynamic>>{},
                   basePrice: (item['base_price'] as num).toDouble(),
                   holidayPrice: (item['holiday_price'] as num).toDouble(),
                   additionalFees: (item['additional_fees'] as num).toDouble(),
@@ -104,6 +108,26 @@ class ApiService {
     } catch (e) {
       print('未知错误: $e');
       throw Exception('获取房源列表失败: $e');
+    }
+  }
+
+  // 更新房源信息（支持部分更新）
+  static Future<void> updateProperty(
+      String id, Map<String, dynamic> updates) async {
+    try {
+      final response = await _dio.put(
+        '/properties/$id',
+        data: updates,
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      if (response.statusCode == 200) {
+        print('房源更新成功！');
+      } else {
+        throw Exception('更新房源失败: ${response.data}');
+      }
+    } on DioException catch (e) {
+      throw Exception('更新房源失败: ${e.message}');
     }
   }
 }

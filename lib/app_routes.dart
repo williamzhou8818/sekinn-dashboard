@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
-import 'screens/dashboard_screen.dart';
-import 'screens/property_list_screen.dart';
+import 'package:seikinn_dashboard/screens/property/dashboard_screen.dart';
+import 'package:seikinn_dashboard/screens/property/property_list_screen.dart';
 
 final GoRouter router = GoRouter(
   routes: [
@@ -10,7 +10,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/properties', // 房源列表页面
-      builder: (context, state) => PropertyListScreen(),
+      builder: (context, state) => const PropertyListScreen(),
     ),
   ],
 );
